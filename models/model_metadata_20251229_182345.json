@@ -1,0 +1,36 @@
+{
+    "date_creation": "2025-12-29 18:23:45",
+    "version_modele": "1.0",
+    "type_modele": "Régression Linéaire Multiple",
+    "bibliotheque": "scikit-learn",
+    "performances": {
+        "r2_train": 0.9545182681401241,
+        "r2_test": 0.89900888163078,
+        "rmse_train": 8835.300839827572,
+        "rmse_test": 9043.329429427518,
+        "mae_train": 6629.378139392077,
+        "mae_test": 6961.214791414112,
+        "mape_train": 10.435581403325305,
+        "mape_test": 10.294473647353792
+    },
+    "features": [
+        "R&D Spend",
+        "Administration",
+        "Marketing Spend",
+        "State"
+    ],
+    "target": "Profit",
+    "nb_observations_train": 40,
+    "nb_observations_test": 10,
+    "coefficients": {
+        "intercept": 54177.3675012406,
+        "coef": {
+            "State_Florida": 881.5717237513446,
+            "State_New York": -52.058399732373324,
+            "R&D Spend": 0.8051696954524042,
+            "Administration": -0.06885930071079377,
+            "Marketing Spend": 0.02968461853573361
+        }
+    },
+    "variable_plus_importante": "State_Florida"
+}
