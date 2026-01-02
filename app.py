@@ -28,6 +28,25 @@ st.markdown("""
     h1 {font-weight: 700; margin-bottom: 0.5rem;}
     h2 {font-weight: 600; margin-top: 2rem;}
     .metric-container {background-color: #f8f9fa; padding: 1rem; border-radius: 8px;}
+ 
+    :root {
+    --bg-color: #EAF4FF;      /* bleu ciel clair */
+    --text-dark: #1E3A5F;    /* bleu foncé lisible */
+}
+
+/* GLOBAL RESET */
+.stApp {
+    background-color: var(--bg-color);
+    font-family: 'Inter', sans-serif;
+    color: var(--text-dark);
+}
+
+/* Headings */
+h1, h2 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+}
+
     </style>
     """, unsafe_allow_html=True)
 
