@@ -2,32 +2,34 @@ pipeline {
   agent any
 
   environment {
-    IMAGE = "TON_DOCKERHUB_USERNAME/pro2"
+    IMAGE = "karledroosvelt/pro2"
     PORT  = "8501"
   }
 
   stages {
+
     stage('Checkout') {
       steps { checkout scm }
     }
 
     stage('Install & Tests') {
       steps {
-        sh '''
+        bat '''
+          python --version
           pip install -U pip
           pip install -r requirements.txt
           pip install pytest
-          pytest -q || true
+          pytest -q
         '''
       }
     }
 
     stage('Build Docker Image') {
       steps {
-        sh '''
-          COMMIT=$(git rev-parse --short HEAD)
-          echo $COMMIT > .git_commit
-          docker build -t $IMAGE:$COMMIT -t $IMAGE:latest .
+        bat '''
+          for /f %%i in ('git rev-parse --short HEAD') do set COMMIT=%%i
+          echo %COMMIT% > .git_commit
+          docker build -t %IMAGE%:%COMMIT% -t %IMAGE%:latest .
         '''
       }
     }
@@ -35,36 +37,32 @@ pipeline {
     stage('DockerHub Login') {
       steps {
         withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DH_USER', passwordVariable: 'DH_PASS')]) {
-          sh 'echo $DH_PASS | docker login -u $DH_USER --password-stdin'
+          bat '''
+            echo %DH_PASS% | docker login -u %DH_USER% --password-stdin
+          '''
         }
       }
     }
 
     stage('Push Image') {
       steps {
-        sh '''
-          COMMIT=$(cat .git_commit)
-          docker push $IMAGE:$COMMIT
-          docker push $IMAGE:latest
+        bat '''
+          set /p COMMIT=<.git_commit
+          docker push %IMAGE%:%COMMIT%
+          docker push %IMAGE%:latest
         '''
       }
     }
 
-    stage('Deploy (optionnel)') {
+    stage('Deploy Automatically') {
       when { branch "main" }
       steps {
-        sh '''
-          docker rm -f pro2-streamlit || true
-          docker pull $IMAGE:latest
-          docker run -d --name pro2-streamlit -p $PORT:$PORT $IMAGE:latest
+        bat '''
+          docker rm -f pro2-streamlit 2>nul
+          docker pull %IMAGE%:latest
+          docker run -d --name pro2-streamlit -p %PORT%:%PORT% %IMAGE%:latest
         '''
       }
-    }
-  }
-
-  post {
-    always {
-      sh 'docker logout || true'
     }
   }
 }
