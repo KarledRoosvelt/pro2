@@ -30,7 +30,7 @@ st.markdown("""
     .metric-container {background-color: #f8f9fa; padding: 1rem; border-radius: 8px;}
  
     :root {
-    --bg-color: #C29C8F;      /* bleu ciel clair */
+    --bg-color: #CED4EB;      /* bleu ciel clair */
     --text-dark: #1E3A5F;    /* bleu foncé lisible */
 }
 
